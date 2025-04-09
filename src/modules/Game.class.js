@@ -100,13 +100,8 @@ class Game {
    */
   start() {
     this.status = 'playing';
-    this.addRandomTile();
-    this.addRandomTile();
   }
 
-  /**
-   * Resets the game.
-   */
   restart() {
     this.board = [
       [0, 0, 0, 0],
@@ -116,8 +111,6 @@ class Game {
     ];
     this.score = 0;
     this.status = 'idle';
-    this.addRandomTile();
-    this.addRandomTile();
   }
 
   // Add your own methods here

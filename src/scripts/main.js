@@ -53,6 +53,7 @@ function updateUI() {
   const startButton = document.querySelector('.start');
   const winMessage = document.querySelector('.message-win');
   const loseMessage = document.querySelector('.message-lose');
+  const startMessage = document.querySelector('.message-start');
 
   if (gameStatus === 'win') {
     winMessage.classList.remove('hidden');
@@ -64,6 +65,12 @@ function updateUI() {
     winMessage.classList.add('hidden');
     loseMessage.classList.add('hidden');
     startButton.textContent = 'Start';
+  }
+
+  if (gameStatus !== 'idle') {
+    startMessage.classList.add('hidden');
+  } else {
+    startMessage.classList.remove('hidden');
   }
 }
 
