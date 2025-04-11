@@ -83,7 +83,7 @@ document.querySelector('.start').addEventListener('click', () => {
     updateUI();
   } else if (game.getStatus() === 'win' || game.getStatus() === 'lose') {
     game.restart();
-    startMessage.classList.add('hidden'); // ⬅️ І при рестарті теж
+    startMessage.classList.add('hidden');
     updateUI();
   }
 });

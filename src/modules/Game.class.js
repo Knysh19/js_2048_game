@@ -98,8 +98,8 @@ class Game {
       [0, 0, 0, 0],
     ];
     this.score = 0;
-    this.addRandomTile(); // ⬅️ Додай першу клітинку
-    this.addRandomTile(); // ⬅️ Додай другу клітинку
+    this.addRandomTile();
+    this.addRandomTile();
     this.status = 'playing';
   }
 
