@@ -75,11 +75,15 @@ function updateUI() {
 }
 
 document.querySelector('.start').addEventListener('click', () => {
+  const startMessage = document.querySelector('.message-start');
+
   if (game.getStatus() === 'idle') {
     game.start();
+    startMessage.classList.add('hidden');
     updateUI();
   } else if (game.getStatus() === 'win' || game.getStatus() === 'lose') {
     game.restart();
+    startMessage.classList.add('hidden'); // ⬅️ І при рестарті теж
     updateUI();
   }
 });

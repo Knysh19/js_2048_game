@@ -84,21 +84,22 @@ class Game {
    * `lose` - the game is lost
    */
   getStatus() {
-    if (this.status === 'win') {
-      return 'win';
-    }
-
-    if (this.status === 'lose') {
-      return 'lose';
-    }
-
-    return 'playing';
+    return this.status;
   }
 
   /**
    * Starts the game.
    */
   start() {
+    this.board = [
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ];
+    this.score = 0;
+    this.addRandomTile(); // ⬅️ Додай першу клітинку
+    this.addRandomTile(); // ⬅️ Додай другу клітинку
     this.status = 'playing';
   }
 
