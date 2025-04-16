@@ -1,23 +1,24 @@
 'use strict';
 
-/**
- * This class represents the game.
- * Now it has a basic structure, that is needed for testing.
- * Feel free to add more props and methods if needed.
- */
 class Game {
   constructor(initialState = null) {
-    this.board = initialState || [
+    this.board = initialState || this.createEmptyBoard();
+    this.score = 0;
+    this.status = 'idle';
+  }
+
+  createEmptyBoard() {
+    return [
       [0, 0, 0, 0],
       [0, 0, 0, 0],
       [0, 0, 0, 0],
       [0, 0, 0, 0],
     ];
-    this.score = 0;
-    this.status = 'idle';
   }
 
   moveLeft() {
+    let moved = false;
+
     for (let row = 0; row < 4; row++) {
       const newRow = this.board[row].filter((cell) => cell !== 0);
 
@@ -32,89 +33,71 @@ class Game {
       while (newRow.length < 4) {
         newRow.push(0);
       }
+
+      if (JSON.stringify(this.board[row]) !== JSON.stringify(newRow)) {
+        moved = true;
+      }
+
       this.board[row] = newRow;
     }
-    this.addRandomTile();
+
+    return moved;
   }
 
   moveRight() {
     this.board.forEach((row) => row.reverse());
-    this.moveLeft();
+
+    const moved = this.moveLeft();
+
     this.board.forEach((row) => row.reverse());
+
+    return moved;
   }
 
   moveUp() {
     this.board = this.transpose(this.board);
-    this.moveLeft();
+
+    const moved = this.moveLeft();
+
     this.board = this.transpose(this.board);
+
+    return moved;
   }
 
   moveDown() {
     this.board = this.transpose(this.board);
-    this.moveRight();
+
+    const moved = this.moveRight();
+
     this.board = this.transpose(this.board);
+
+    return moved;
   }
 
   transpose(board) {
     return board[0].map((_, colIndex) => board.map((row) => row[colIndex]));
   }
 
-  /**
-   * @returns {number}
-   */
   getScore() {
     return this.score;
   }
 
-  /**
-   * @returns {number[][]}
-   */
   getState() {
     return this.board;
   }
 
-  /**
-   * Returns the current game status.
-   *
-   * @returns {string} One of: 'idle', 'playing', 'win', 'lose'
-   *
-   * `idle` - the game has not started yet (the initial state);
-   * `playing` - the game is in progress;
-   * `win` - the game is won;
-   * `lose` - the game is lost
-   */
   getStatus() {
     return this.status;
   }
 
-  /**
-   * Starts the game.
-   */
   start() {
-    this.board = [
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-    ];
+    this.board = this.createEmptyBoard();
     this.score = 0;
     this.addRandomTile();
     this.addRandomTile();
     this.status = 'playing';
   }
 
-  restart() {
-    this.board = [
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-    ];
-    this.score = 0;
-    this.status = 'idle';
-  }
-
-  // Add your own methods here
   addRandomTile() {
     const emptyCells = [];
 
@@ -130,8 +113,8 @@ class Game {
       return;
     }
 
-    const randomIndex = Math.floor(Math.random() * emptyCells.length);
-    const [row, col] = emptyCells[randomIndex];
+    const [row, col] =
+      emptyCells[Math.floor(Math.random() * emptyCells.length)];
 
     this.board[row][col] = Math.random() < 0.9 ? 2 : 4;
   }
@@ -153,17 +136,14 @@ class Game {
       for (let c = 0; c < 4; c++) {
         if (this.board[r][c] === 0) {
           canMove = true;
-          break;
         }
 
         if (r < 3 && this.board[r][c] === this.board[r + 1][c]) {
           canMove = true;
-          break;
         }
 
         if (c < 3 && this.board[r][c] === this.board[r][c + 1]) {
           canMove = true;
-          break;
         }
       }
     }
@@ -174,4 +154,4 @@ class Game {
   }
 }
 
-module.exports = Game;
+export default Game;

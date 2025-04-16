@@ -9,21 +9,27 @@ document.addEventListener('keydown', (evnt) => {
     return;
   }
 
-  switch (event.key) {
+  let moved = false;
+
+  switch (evnt.key) {
     case 'ArrowLeft':
-      game.moveLeft();
+      moved = game.moveLeft();
       break;
     case 'ArrowRight':
-      game.moveRight();
+      moved = game.moveRight();
       break;
     case 'ArrowUp':
-      game.moveUp();
+      moved = game.moveUp();
       break;
     case 'ArrowDown':
-      game.moveDown();
+      moved = game.moveDown();
       break;
     default:
       return;
+  }
+
+  if (moved) {
+    game.addRandomTile();
   }
 
   game.checkGameOver();
@@ -55,35 +61,14 @@ function updateUI() {
   const loseMessage = document.querySelector('.message-lose');
   const startMessage = document.querySelector('.message-start');
 
-  if (gameStatus === 'win') {
-    winMessage.classList.remove('hidden');
-    startButton.textContent = 'Restart';
-  } else if (gameStatus === 'lose') {
-    loseMessage.classList.remove('hidden');
-    startButton.textContent = 'Restart';
-  } else {
-    winMessage.classList.add('hidden');
-    loseMessage.classList.add('hidden');
-    startButton.textContent = 'Start';
-  }
+  winMessage.classList.toggle('hidden', gameStatus !== 'win');
+  loseMessage.classList.toggle('hidden', gameStatus !== 'lose');
+  startMessage.classList.toggle('hidden', gameStatus !== 'idle');
 
-  if (gameStatus !== 'idle') {
-    startMessage.classList.add('hidden');
-  } else {
-    startMessage.classList.remove('hidden');
-  }
+  startButton.textContent = gameStatus === 'idle' ? 'Start' : 'Restart';
 }
 
 document.querySelector('.start').addEventListener('click', () => {
-  const startMessage = document.querySelector('.message-start');
-
-  if (game.getStatus() === 'idle') {
-    game.start();
-    startMessage.classList.add('hidden');
-    updateUI();
-  } else if (game.getStatus() === 'win' || game.getStatus() === 'lose') {
-    game.restart();
-    startMessage.classList.add('hidden');
-    updateUI();
-  }
+  game.start();
+  updateUI();
 });
